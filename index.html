@@ -56,7 +56,6 @@
             cursor: pointer;
             user-select: none;
             -webkit-user-select: none;
-            /* Fade-in animation on page load */
             animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
@@ -65,7 +64,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Wiggle Animation Keyframes */
         @keyframes wiggle {
             0%, 100% { transform: translateX(0); }
             15% { transform: translateX(-6px) rotate(-1.5deg); }
@@ -75,7 +73,6 @@
             75% { transform: translateX(-2px) rotate(-0.5deg); }
         }
 
-        /* Class applied by JavaScript on tap */
         .wiggle-active {
             animation: wiggle 0.5s ease-in-out;
         }
@@ -124,14 +121,14 @@
             gap: 12px;
             color: white; 
             padding: 16px; 
-            margin: 16px 0; 
+            margin: 14px 0; 
             text-decoration: none; 
             border-radius: 16px; 
             font-weight: 600; 
             font-size: 15px; 
             transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
             position: relative;
-            z-index: 2; /* Ensures buttons stay clickable on top of the card */
+            z-index: 2;
         }
 
         .btn-phone {
@@ -157,13 +154,24 @@
             transform: translateY(-2px);
         }
 
+        /* New High-Contrast Save Contact Button */
+        .btn-save {
+            background: linear-gradient(135deg, #7b2cbf 0%, #5a189a 100%);
+            box-shadow: 0 4px 15px rgba(123, 44, 191, 0.3);
+        }
+
+        .btn-save:hover {
+            background: linear-gradient(135deg, #9d4edd 0%, #7b2cbf 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(123, 44, 191, 0.5);
+        }
+
         .btn:active { 
             transform: translateY(1px); 
         }
     </style>
 </head>
 <body>
-    <!-- The main container box -->
     <div class="card" id="contactCard">
         <div class="avatar">MP</div>
         <h1>Milaan Patel</h1>
@@ -172,24 +180,20 @@
         <!-- Premium Action Buttons -->
         <a class="btn btn-phone" href="tel:+447979309148" onclick="event.stopPropagation();">📞 +44 7979 309148</a>
         <a class="btn btn-email" href="mailto:milaanpatel12@gmail.com" onclick="event.stopPropagation();">✉️ milaanpatel12@gmail.com</a>
+        
+        <!-- New Save Contact Button (Links to your vCard file) -->
+        <a class="btn btn-save" href="milaan.vcf" download="Milaan_Patel.vcf" onclick="event.stopPropagation();">👤 Add to Contacts</a>
     </div>
 
-    <!-- Small script to trigger the wiggle animation on tap -->
     <script>
         const card = document.getElementById('contactCard');
         
         card.addEventListener('click', () => {
-            // Remove the class first if it's already there (so it can re-trigger on rapid taps)
             card.classList.remove('wiggle-active');
-            
-            // Trigger a reflow to reset the animation state
             void card.offsetWidth; 
-            
-            // Add the wiggle animation class
             card.classList.add('wiggle-active');
         });
 
-        // Clean up the class when the animation finishes
         card.addEventListener('animationend', (e) => {
             if (e.animationName === 'wiggle') {
                 card.classList.remove('wiggle-active');
