@@ -53,12 +53,31 @@
             max-width: 360px; 
             width: 100%;
             border: 1px solid rgba(255, 255, 255, 0.08);
+            cursor: pointer;
+            user-select: none;
+            -webkit-user-select: none;
+            /* Fade-in animation on page load */
             animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Wiggle Animation Keyframes */
+        @keyframes wiggle {
+            0%, 100% { transform: translateX(0); }
+            15% { transform: translateX(-6px) rotate(-1.5deg); }
+            30% { transform: translateX(5px) rotate(1deg); }
+            45% { transform: translateX(-4px) rotate(-1deg); }
+            60% { transform: translateX(3px) rotate(0.5deg); }
+            75% { transform: translateX(-2px) rotate(-0.5deg); }
+        }
+
+        /* Class applied by JavaScript on tap */
+        .wiggle-active {
+            animation: wiggle 0.5s ease-in-out;
         }
 
         /* Animated Initial Avatar */
@@ -109,8 +128,10 @@
             text-decoration: none; 
             border-radius: 16px; 
             font-weight: 600; 
-            font-size: 16px;
+            font-size: 15px; 
             transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+            position: relative;
+            z-index: 2; /* Ensures buttons stay clickable on top of the card */
         }
 
         .btn-phone {
@@ -142,15 +163,38 @@
     </style>
 </head>
 <body>
-    <div class="card">
+    <!-- The main container box -->
+    <div class="card" id="contactCard">
         <div class="avatar">MP</div>
         <h1>Milaan Patel</h1>
-        <!-- Custom funny text added below -->
         <p>Congratulations, you successfully scanned a piece of plastic.</p>
         
         <!-- Premium Action Buttons -->
-        <a class="btn btn-phone" href="tel:+447979309148">📞 Call Number</a>
-        <a class="btn btn-email" href="mailto:milaanpatel12@gmail.com">✉️ Send Email</a>
+        <a class="btn btn-phone" href="tel:+447979309148" onclick="event.stopPropagation();">📞 +44 7979 309148</a>
+        <a class="btn btn-email" href="mailto:milaanpatel12@gmail.com" onclick="event.stopPropagation();">✉️ milaanpatel12@gmail.com</a>
     </div>
+
+    <!-- Small script to trigger the wiggle animation on tap -->
+    <script>
+        const card = document.getElementById('contactCard');
+        
+        card.addEventListener('click', () => {
+            // Remove the class first if it's already there (so it can re-trigger on rapid taps)
+            card.classList.remove('wiggle-active');
+            
+            // Trigger a reflow to reset the animation state
+            void card.offsetWidth; 
+            
+            // Add the wiggle animation class
+            card.classList.add('wiggle-active');
+        });
+
+        // Clean up the class when the animation finishes
+        card.addEventListener('animationend', (e) => {
+            if (e.animationName === 'wiggle') {
+                card.classList.remove('wiggle-active');
+            }
+        });
+    </script>
 </body>
 </html>
